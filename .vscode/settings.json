@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "hal_fake.h": "c",
+        "i2c.h": "c",
+        "hal.h": "c",
+        "stdio.h": "c"
+    }
+}
