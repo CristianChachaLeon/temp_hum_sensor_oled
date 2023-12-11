@@ -23,3 +23,7 @@ int8_t i2c_write(uint8_t address, uint8_t data)
 
     return ret;
 }
+
+void i2c_write_start(){
+    control_reg_write((1<<TWINT)|(1<<TWSTA)|(1<<TWEN));
+}

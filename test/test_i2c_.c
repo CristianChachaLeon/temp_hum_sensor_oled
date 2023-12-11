@@ -17,20 +17,22 @@ void test_init_i2c_freq_100k()
     TEST_ASSERT_EQUAL(baud_rate_reg_read(), 72);
 }
 
-/*void test_write_byte_i2c()
+void test_i2c_start()
 {
-    uint8_t address = 1;
-    uint8_t data = 10;
-    int8_t res;
-    res = i2c_write(address, data);
-    TEST_ASSERT_EQUAL(res, 0);
-}*/
+    i2c_write_start();
+    TEST_ASSERT_EQUAL(control_reg_read()& 0xA4,0xA4);
+}
+
+void test_i2c_write(){
+    TEST_FAIL_MESSAGE("Fail");
+}
 
 int main(int argc, char **argv)
 {
     UNITY_BEGIN();
     RUN_TEST(test_init_i2c_freq_100k);
-    // RUN_TEST(test_write_byte_i2c);
+    RUN_TEST(test_i2c_start);
+    RUN_TEST(test_i2c_write);
 
     UNITY_END();
 }
