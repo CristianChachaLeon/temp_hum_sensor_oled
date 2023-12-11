@@ -1,5 +1,5 @@
-#ifndef _HAL_FAKE_H_
-#define _HAL_FAKE_H_
+#ifndef _HAL_H_
+#define _HAL_H_
 
 #include <stdint.h>
 

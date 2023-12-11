@@ -1,13 +1,13 @@
 #ifndef _I2C_H_
 #define _I2C_H_
 
-#include <stdint.h>
 
-#ifdef TESTING_ON
+#ifdef PIO_UNIT_TESTING
 #include "hal_fake.h"
 #else
-// #include "hal.h"
+#include "hal.h"
 #endif
+
 /// @brief init i2c driver, set freq 100k
 /// @param
 void i2c_init();

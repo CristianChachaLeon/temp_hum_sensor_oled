@@ -3,6 +3,7 @@
         "hal_fake.h": "c",
         "i2c.h": "c",
         "hal.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdint.h": "c"
     }
 }

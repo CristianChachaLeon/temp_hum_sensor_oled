@@ -27,6 +27,7 @@ int main(void)
   {
     // Toggle the LED
     PORTB ^= (1 << LED_PIN);
+    printf("blink\n");
 
     // Delay for 1 second (adjust as needed)
     _delay_ms(500);
