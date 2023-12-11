@@ -24,6 +24,10 @@ void test_i2c_start()
 }
 
 void test_i2c_write(){
+    uint8_t data=10;
+    uint8_t  address= 1;
+    i2c_init();
+    i2c_write(address,data);
     TEST_FAIL_MESSAGE("Fail");
 }
 
