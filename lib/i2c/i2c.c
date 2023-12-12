@@ -6,6 +6,7 @@
 #define TWSTA 5
 #endif
 uint8_t i2c_write_start(void);
+uint8_t i2c_write_address(uint8_t address);
 void i2c_init()
 {
     status_reg_write(0); // TW_SR = 0 => prescaler = 1
@@ -33,7 +34,7 @@ uint8_t i2c_write_start(){
     control_reg_write((1<<TWINT)|(1<<TWSTA)|(1<<TWEN));
     while (!control_reg_int_is_set());
     
-    if(status_reg_read()& 0xF8 != 0x08){
+    if((status_reg_read()& 0xF8) != 0x08){
         res = -1;
     }
     return res;
@@ -42,3 +43,14 @@ uint8_t i2c_write_start(){
 /*void load_slade_add(uint8_t add){
     data_register_write();
 }*/
+
+uint8_t i2c_write_address(uint8_t address ){
+    uint8_t res=0;
+    data_reg_write(address <<1);
+    control_reg_write((1<<TWINT)|(1<<TWEN));
+    while (!control_reg_int_is_set());
+    if((status_reg_read() & 0xF8) != MT_SLA_ACK){
+        res = -1;
+    }
+    return res;
+}

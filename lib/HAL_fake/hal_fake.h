@@ -7,6 +7,7 @@
 #define TWSTA 5 
 #define TWEN  2
 
+#define MT_SLA_ACK   0x18
 void status_reg_write(uint8_t value);
 void baud_rate_reg_write(uint8_t value);
 void control_reg_write(uint8_t value);
