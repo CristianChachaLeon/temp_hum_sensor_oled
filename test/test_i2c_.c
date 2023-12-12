@@ -19,9 +19,12 @@ void test_init_i2c_freq_100k()
 
 void test_i2c_start()
 {
-    i2c_write_start();
+    status_reg_write(0x08);
+    uint8_t res = i2c_write_start();
     TEST_ASSERT_EQUAL(control_reg_read()& 0xA4,0xA4);
+    TEST_ASSERT_EQUAL(res,0);
 }
+
 
 void test_i2c_write(){
     uint8_t data=10;
