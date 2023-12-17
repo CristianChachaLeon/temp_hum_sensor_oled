@@ -21,23 +21,36 @@ void test_i2c_start()
 {
     status_reg_write(0x08);
     uint8_t res = i2c_write_start();
-    TEST_ASSERT_EQUAL(control_reg_read()& 0xA4,0xA4);
-    TEST_ASSERT_EQUAL(res,0);
+    TEST_ASSERT_EQUAL(control_reg_read() & 0xA4, 0xA4);
+    TEST_ASSERT_EQUAL(res, 0);
 }
 
-void test_i2c_write_address(){
-    status_reg_write(MT_SLA_ACK);
-    uint8_t address= 1;
+void test_i2c_write_address()
+{
+    status_reg_write(TW_MT_SLA_ACK);
+    uint8_t address = 1;
     uint8_t res = i2c_write_address(address);
-    TEST_ASSERT_EQUAL(data_reg_read(),address<<1);
-    TEST_ASSERT_EQUAL(control_reg_read() & 0xB4,0x84);
-    TEST_ASSERT_EQUAL(res,0);
+    TEST_ASSERT_EQUAL(data_reg_read(), address << 1);
+    TEST_ASSERT_EQUAL(control_reg_read() & 0xB4, 0x84);
+    TEST_ASSERT_EQUAL(res, 0);
 }
-void test_i2c_write(){
-    uint8_t data=10;
-    uint8_t  address= 1;
+
+void test_i2c_write_data()
+{
+    status_reg_write(TW_MT_DATA_ACK);
+    control_reg_write(0);
+    uint8_t data = 55;
+    uint8_t res = i2c_write_byte(data);
+    TEST_ASSERT_EQUAL(data_reg_read(), data);
+    TEST_ASSERT_EQUAL(control_reg_read() & 0xB4, 0x84);
+    TEST_ASSERT_EQUAL(res, 0);
+}
+void test_i2c_write()
+{
+    uint8_t data = 10;
+    uint8_t address = 1;
     i2c_init();
-    i2c_write(address,data);
+    i2c_write(address, data);
     TEST_FAIL_MESSAGE("Fail");
 }
 
@@ -47,6 +60,7 @@ int main(int argc, char **argv)
     RUN_TEST(test_init_i2c_freq_100k);
     RUN_TEST(test_i2c_start);
     RUN_TEST(test_i2c_write_address);
+    RUN_TEST(test_i2c_write_data);
     RUN_TEST(test_i2c_write);
 
     UNITY_END();

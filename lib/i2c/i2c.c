@@ -23,18 +23,21 @@ int8_t i2c_write(uint8_t address, uint8_t data)
 
 
         ;*/
-    //i2c_write_start();
-    //while (!control_reg_int_is_set());
-    //load_slade_add(address);
+    // i2c_write_start();
+    // while (!control_reg_int_is_set());
+    // load_slade_add(address);
     return ret;
 }
 
-uint8_t i2c_write_start(){
+uint8_t i2c_write_start()
+{
     uint8_t res = 0;
-    control_reg_write((1<<TWINT)|(1<<TWSTA)|(1<<TWEN));
-    while (!control_reg_int_is_set());
-    
-    if((status_reg_read()& 0xF8) != 0x08){
+    control_reg_write((1 << TWINT) | (1 << TWSTA) | (1 << TWEN));
+    while (!control_reg_int_is_set())
+        ;
+
+    if ((status_reg_read() & 0xF8) != 0x08)
+    {
         res = -1;
     }
     return res;
@@ -44,12 +47,30 @@ uint8_t i2c_write_start(){
     data_register_write();
 }*/
 
-uint8_t i2c_write_address(uint8_t address ){
-    uint8_t res=0;
-    data_reg_write(address <<1);
-    control_reg_write((1<<TWINT)|(1<<TWEN));
-    while (!control_reg_int_is_set());
-    if((status_reg_read() & 0xF8) != MT_SLA_ACK){
+uint8_t i2c_write_address(uint8_t address)
+{
+    uint8_t res = 0;
+    data_reg_write(address << 1);
+    control_reg_write((1 << TWINT) | (1 << TWEN));
+    while (!control_reg_int_is_set())
+        ;
+    if ((status_reg_read() & 0xF8) != TW_MT_SLA_ACK)
+    {
+        res = -1;
+    }
+    return res;
+}
+
+uint8_t i2c_write_byte(uint8_t data)
+{
+    uint8_t res = 0;
+    data_reg_write(data);
+    control_reg_write((1 << TWINT) | (1 << TWEN));
+
+    while (!control_reg_int_is_set())
+        ;
+    if ((status_reg_read() & 0xF8) != TW_MT_DATA_ACK)
+    {
         res = -1;
     }
     return res;

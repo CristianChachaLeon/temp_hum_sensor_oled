@@ -4,10 +4,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #define TWINT 7
-#define TWSTA 5 
-#define TWEN  2
+#define TWSTA 5
+#define TWEN 2
 
-#define MT_SLA_ACK   0x18
+#define TW_MT_SLA_ACK 0x18
+#define TW_MT_DATA_ACK 0x28
 void status_reg_write(uint8_t value);
 void baud_rate_reg_write(uint8_t value);
 void control_reg_write(uint8_t value);
