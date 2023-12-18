@@ -7,6 +7,7 @@
 #endif
 uint8_t i2c_write_start(void);
 uint8_t i2c_write_address(uint8_t address);
+uint8_t i2c_write_byte(uint8_t data);
 void i2c_stop(void);
 void i2c_init()
 {
@@ -17,16 +18,22 @@ void i2c_init()
 int8_t i2c_write(uint8_t address, uint8_t data)
 {
     int8_t ret = -1;
-    i2c_write_start();
-    // send start condition
-    //*cr_address |= (1 << TWINT) | (1 << TWEN) | (1 << TWSTA);
-    /*while (!(*cr_address & (1 << TWINT)))
-
-
-        ;*/
-    // i2c_write_start();
-    // while (!control_reg_int_is_set());
-    // load_slade_add(address);
+    ret = i2c_write_start();
+    if (ret != 0)
+    {
+        return -1; // error code i2c_start
+    }
+    ret = i2c_write_address(address);
+    if (ret != 0)
+    {
+        return -2; // error code i2c_address
+    }
+    ret = i2c_write_byte(data);
+    if (ret != 0)
+    {
+        return -3; // error code i2c_write byte
+    }
+    i2c_stop();
     return ret;
 }
 
@@ -37,16 +44,12 @@ uint8_t i2c_write_start()
     while (!control_reg_int_is_set())
         ;
 
-    if ((status_reg_read() & 0xF8) != 0x08)
+    if ((status_reg_read() & 0xF8) != TW_START)
     {
         res = -1;
     }
     return res;
 }
-
-/*void load_slade_add(uint8_t add){
-    data_register_write();
-}*/
 
 uint8_t i2c_write_address(uint8_t address)
 {
