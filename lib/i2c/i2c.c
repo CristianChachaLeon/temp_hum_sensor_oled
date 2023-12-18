@@ -7,6 +7,7 @@
 #endif
 uint8_t i2c_write_start(void);
 uint8_t i2c_write_address(uint8_t address);
+void i2c_stop(void);
 void i2c_init()
 {
     status_reg_write(0); // TW_SR = 0 => prescaler = 1
@@ -16,7 +17,7 @@ void i2c_init()
 int8_t i2c_write(uint8_t address, uint8_t data)
 {
     int8_t ret = -1;
-
+    i2c_write_start();
     // send start condition
     //*cr_address |= (1 << TWINT) | (1 << TWEN) | (1 << TWSTA);
     /*while (!(*cr_address & (1 << TWINT)))
@@ -59,6 +60,11 @@ uint8_t i2c_write_address(uint8_t address)
         res = -1;
     }
     return res;
+}
+
+void i2c_stop(void)
+{
+    control_reg_write((1 << TWINT) | (1 << TWEN) | (1 << TWSTO));
 }
 
 uint8_t i2c_write_byte(uint8_t data)

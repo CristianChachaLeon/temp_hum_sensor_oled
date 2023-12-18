@@ -5,5 +5,7 @@
         "hal.h": "c",
         "stdio.h": "c",
         "stdint.h": "c"
-    }
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
 }

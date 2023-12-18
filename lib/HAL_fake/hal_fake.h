@@ -6,6 +6,7 @@
 #define TWINT 7
 #define TWSTA 5
 #define TWEN 2
+#define TWSTO 4
 
 #define TW_MT_SLA_ACK 0x18
 #define TW_MT_DATA_ACK 0x28
