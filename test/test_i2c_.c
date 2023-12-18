@@ -53,7 +53,7 @@ void test_i2c_stop()
     i2c_stop();
     TEST_ASSERT_EQUAL(control_reg_read() & 0xB4, 0x94);
 }
-void test_i2c_write()
+void test_i2c_write_address_and_data()
 {
     uint8_t data = 10;
     uint8_t address = 1;
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     RUN_TEST(test_i2c_write_address);
     RUN_TEST(test_i2c_write_data);
     RUN_TEST(test_i2c_stop);
-    RUN_TEST(test_i2c_write);
+    RUN_TEST(test_i2c_write_address_and_data);
 
     UNITY_END();
 }
