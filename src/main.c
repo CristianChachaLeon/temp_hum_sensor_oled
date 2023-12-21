@@ -41,11 +41,6 @@ int main(void)
       }
       i2c_stop();
     }
-    if (num_devices <= 0)
-    {
-      printf("No found device");
-      num_devices = 0;
-    }
 
     // Delay for 1 second (adjust as needed)
     _delay_ms(1000);
