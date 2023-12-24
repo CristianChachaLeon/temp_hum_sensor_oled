@@ -69,6 +69,35 @@ void test_i2c_write_address_and_data()
     i2c_stop();
     TEST_ASSERT_EQUAL(res, 0);
 }
+void test_i2c_write_multiple_data()
+{
+    uint8_t data[5] = {1, 2, 3, 4, 5};
+    uint8_t address = 0x10;
+    i2c_init();
+    status_reg_write(TW_START);
+    int8_t res = 0;
+    // int8_t res = i2c_write_data(address, data, sizeof(data) / sizeof(data[0]));
+    res = i2c_write_start();
+    status_reg_write(TW_MT_SLA_ACK);
+    if (res == 0)
+    {
+        res = i2c_write_address(address);
+    }
+    if (res == 0)
+    {
+        for (uint8_t i = 0; i < sizeof(data) / sizeof(data[0]); i++)
+        {
+            status_reg_write(TW_MT_DATA_ACK);
+            res = i2c_write_byte(data[i]);
+            if (res != 0)
+            {
+                break;
+            }
+        }
+    }
+    i2c_stop();
+    TEST_ASSERT_EQUAL(res, 0);
+}
 
 int main(int argc, char **argv)
 {
@@ -79,6 +108,7 @@ int main(int argc, char **argv)
     RUN_TEST(test_i2c_write_data);
     RUN_TEST(test_i2c_stop);
     RUN_TEST(test_i2c_write_address_and_data);
+    RUN_TEST(test_i2c_write_multiple_data);
 
     UNITY_END();
 }

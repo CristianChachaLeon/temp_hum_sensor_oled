@@ -16,4 +16,6 @@ void i2c_stop(void);
 uint8_t i2c_write_byte(uint8_t data);
 int8_t i2c_write(uint8_t address, uint8_t data);
 
+int8_t i2c_write_data(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len);
+
 #endif

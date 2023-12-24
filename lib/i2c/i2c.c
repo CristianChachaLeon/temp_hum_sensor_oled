@@ -84,3 +84,26 @@ uint8_t i2c_write_byte(uint8_t data)
     }
     return res;
 }
+
+int8_t i2c_write_data(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len)
+{
+    int8_t res = 0;
+    res = i2c_write_start();
+    if (res == 0)
+    {
+        res = i2c_write_address(reg_addr);
+    }
+    if (res == 0)
+    {
+        for (uint8_t i = 0; i < len; i++)
+        {
+            res = i2c_write_byte(*reg_data++);
+            if (res != 0)
+            {
+                break;
+            }
+        }
+    }
+    i2c_stop();
+    return res;
+}
