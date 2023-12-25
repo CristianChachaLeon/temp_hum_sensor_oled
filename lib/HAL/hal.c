@@ -16,7 +16,10 @@ void data_reg_write(uint8_t value)
 {
     TWDR = value;
 }
-
+uint8_t data_reg_read()
+{
+    return TWDR;
+}
 bool control_reg_int_is_set(void)
 {
     return TWCR & (1 << TWINT);

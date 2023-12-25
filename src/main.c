@@ -12,6 +12,13 @@ BME280_INTF_RET_TYPE bme280_i2c_write(uint8_t reg_addr, const uint8_t *reg_data,
 {
   return i2c_write_data(reg_addr, reg_data, len);
 }
+
+BME280_INTF_RET_TYPE bme280_i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t length, void *intf_ptr)
+{
+
+  return i2c_recv_data(reg_addr, reg_data, length);
+}
+
 int main(void)
 {
   init_uart(115200);
@@ -21,13 +28,12 @@ int main(void)
   static uint8_t dev_addr;
   dev_addr = BME280_I2C_ADDR_PRIM;
   dev.intf_ptr = &dev_addr;
-  // dev.read = bme280_i2c_read; // funcion de i2c real ( ref)
+  dev.read = bme280_i2c_read; // funcion de i2c real ( ref)
   dev.write = bme280_i2c_write;
   //   dev.intf = BME280_I2C_INTF;
-  //    rslt = bme280_interface_selection(&dev, BME280_I2C_INTF);
-  //   rslt = bme280_init(&dev);
+  rslt = bme280_init(&dev);
   //   bme280_error_codes_print_result("bme280_init", rslt);
-  // printf("%d\n", rslt);
+  printf("%d\n", rslt);
   //  Set the LED pin as an output
   DDRB |= (1 << LED_PIN);
   printf("init i2c module\n");

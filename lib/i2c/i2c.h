@@ -17,5 +17,8 @@ uint8_t i2c_write_byte(uint8_t data);
 int8_t i2c_write(uint8_t address, uint8_t data);
 
 int8_t i2c_write_data(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len);
+int8_t i2c_address_receive(uint8_t address);
+int8_t i2c_read_byte(uint8_t *data_register);
 
+int8_t i2c_recv_data(uint8_t reg_addr, uint8_t *reg_data, uint32_t length);
 #endif
