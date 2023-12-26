@@ -28,3 +28,12 @@ uint8_t status_reg_read()
 {
     return TWSR;
 }
+
+uint8_t baud_rate_reg_read(void)
+{
+    return TWBR;
+}
+uint8_t control_reg_read(void)
+{
+    return TWCR;
+}

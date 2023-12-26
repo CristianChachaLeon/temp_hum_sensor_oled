@@ -81,6 +81,7 @@ uint8_t i2c_write_address(uint8_t address)
 void i2c_stop(void)
 {
     control_reg_write((1 << TWINT) | (1 << TWEN) | (1 << TWSTO));
+    control_reg_write(0);
 }
 
 uint8_t i2c_write_byte(uint8_t data)
@@ -101,6 +102,7 @@ uint8_t i2c_write_byte(uint8_t data)
 int8_t i2c_read_byte(uint8_t *data_register)
 {
     int8_t res = 0;
+    control_reg_write((1 << TWINT) | (1 << TWEN) | (1 << TWEA));
     while (!control_reg_int_is_set())
         ;
     *data_register = data_reg_read();
@@ -142,6 +144,7 @@ int8_t i2c_recv_data(uint8_t reg_addr, uint8_t *reg_data, uint32_t length)
     {
         res = i2c_address_receive(reg_addr);
     }
+    /*
     if (res == 0)
     {
         for (uint8_t i = 0; i < length; i++)
@@ -153,5 +156,24 @@ int8_t i2c_recv_data(uint8_t reg_addr, uint8_t *reg_data, uint32_t length)
             }
         }
     }
+    */
     return res;
+}
+
+int8_t i2c_repStart(void)
+{
+    uint8_t res = 0;
+    control_reg_write((1 << TWINT) | (1 << TWSTA) | (1 << TWEN));
+    while (!control_reg_int_is_set())
+        ;
+
+    if ((status_reg_read() & 0xF8) != TW_REP_START)
+    {
+        res = -1;
+    }
+    return res;
+}
+int8_t i2c_recv_byte(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data)
+{
+    return -1;
 }

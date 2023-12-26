@@ -31,7 +31,8 @@ int main(void)
   dev.read = bme280_i2c_read; // funcion de i2c real ( ref)
   dev.write = bme280_i2c_write;
   //   dev.intf = BME280_I2C_INTF;
-  rslt = bme280_init(&dev);
+  // rslt = bme280_init(&dev);
+  printf("bme280 %d\n", dev.intf_rslt);
   //   bme280_error_codes_print_result("bme280_init", rslt);
   printf("%d\n", rslt);
   //  Set the LED pin as an output
