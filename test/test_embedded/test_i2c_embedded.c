@@ -73,6 +73,7 @@ void test_i2c_receive_data_embedded()
     uint8_t data = 0;
     res = i2c_recv_byte(dev_addr, reg_addr, &data);
     TEST_ASSERT_EQUAL(res, 0);
+    TEST_ASSERT_EQUAL(data, 0x60);
 }
 
 int main(int argc, char **argv)

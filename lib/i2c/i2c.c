@@ -175,5 +175,31 @@ int8_t i2c_repStart(void)
 }
 int8_t i2c_recv_byte(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data)
 {
-    return -1;
+    int8_t res = 0;
+    res = i2c_write_start();
+    if (res == 0)
+    {
+        res = i2c_write_address(dev_addr);
+    }
+    if (res == 0)
+    {
+        res = i2c_write_byte(reg_addr);
+    }
+    if (res == 0)
+    {
+        res = i2c_repStart();
+    }
+    if (res == 0)
+    {
+        res = i2c_address_receive(dev_addr);
+    }
+    if (res == 0)
+    {
+        res = i2c_read_byte(data);
+    }
+    if (res == 0)
+    {
+        i2c_stop();
+    }
+    return res;
 }
