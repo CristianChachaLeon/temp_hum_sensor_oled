@@ -65,7 +65,7 @@ void test_i2c_read_data_embedded()
     TEST_ASSERT_EQUAL(data, 0x60);
     i2c_stop();
 }
-void test_i2c_receive_data_embedded()
+void test_i2c_receive_one_byte_embedded()
 {
     uint8_t dev_addr = 0x76;
     uint8_t res = 0;
