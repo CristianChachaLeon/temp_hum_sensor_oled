@@ -112,6 +112,19 @@ int8_t i2c_read_byte(uint8_t *data_register)
     }
     return res;
 }
+int8_t i2c_read_last_byte(uint8_t *data_register)
+{
+    int8_t res = 0;
+    control_reg_write((1 << TWINT) | (1 << TWEN));
+    while (!control_reg_int_is_set())
+        ;
+    *data_register = data_reg_read();
+    if ((status_reg_read() & 0xF8) != TW_MR_DATA_NACK)
+    {
+        res = -1;
+    }
+    return res;
+}
 
 int8_t i2c_write_data(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len)
 {
@@ -173,7 +186,7 @@ int8_t i2c_repStart(void)
     }
     return res;
 }
-int8_t i2c_recv_byte(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data)
+int8_t i2c_recv(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint32_t len)
 {
     int8_t res = 0;
     res = i2c_write_start();
@@ -195,7 +208,15 @@ int8_t i2c_recv_byte(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data)
     }
     if (res == 0)
     {
-        res = i2c_read_byte(data);
+        for (uint32_t i = 0; i < len - 1; i++)
+        {
+            res = i2c_read_byte(data++);
+            if (res != 0)
+            {
+                break;
+            }
+        }
+        res = i2c_read_last_byte(data);
     }
     if (res == 0)
     {

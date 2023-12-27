@@ -1,6 +1,6 @@
 #include <unity.h>
 #include "i2c.h"
-
+#include "uart.h"
 void setUp(void)
 {
     // set stuff up here
@@ -71,20 +71,22 @@ void test_i2c_receive_one_byte_embedded()
     uint8_t res = 0;
     uint8_t reg_addr = 0xD0;
     uint8_t data = 0;
-    res = i2c_recv_byte(dev_addr, reg_addr, &data);
+    res = i2c_recv(dev_addr, reg_addr, &data, 1);
     TEST_ASSERT_EQUAL(res, 0);
     TEST_ASSERT_EQUAL(data, 0x60);
 }
 
 void test_i2c_receive_more_than_one_byte_embedded()
 {
-
     uint8_t dev_addr = 0x76;
-    uint8_t reg_addr = 0xE0;
+    uint8_t reg_addr = 0x88;
     uint8_t res = 0;
-    // uint8_t data[10] = 0;
-
-    TEST_FAIL_MESSAGE("Fail read more than one byte");
+    uint32_t len = 26;
+    uint8_t calib_data[26] = {0};
+    res = i2c_recv(dev_addr, reg_addr, calib_data, len);
+    TEST_ASSERT_EQUAL(res, 0);
+    TEST_ASSERT_EQUAL(calib_data[2], 0);
+    TEST_ASSERT_NOT_EQUAL(calib_data[25], 0);
 }
 
 void test_i2c_write_data_embedded()
@@ -123,7 +125,7 @@ int main(int argc, char **argv)
     RUN_TEST(test_i2c_address_to_transmit_embedded);
     RUN_TEST(test_i2c_read_data_embedded);
     RUN_TEST(test_i2c_receive_one_byte_embedded);
-    // RUN_TEST(test_i2c_receive_more_than_one_byte_embedded);
+    RUN_TEST(test_i2c_receive_more_than_one_byte_embedded);
     RUN_TEST(test_i2c_write_data_embedded);
     RUN_TEST(test_i2c_transmit_one_byte);
 
