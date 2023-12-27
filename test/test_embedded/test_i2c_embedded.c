@@ -76,6 +76,45 @@ void test_i2c_receive_one_byte_embedded()
     TEST_ASSERT_EQUAL(data, 0x60);
 }
 
+void test_i2c_receive_more_than_one_byte_embedded()
+{
+
+    uint8_t dev_addr = 0x76;
+    uint8_t reg_addr = 0xE0;
+    uint8_t res = 0;
+    // uint8_t data[10] = 0;
+
+    TEST_FAIL_MESSAGE("Fail read more than one byte");
+}
+
+void test_i2c_write_data_embedded()
+{
+    uint8_t dev_addr = 0x76;
+    uint8_t reg_addr = 0xE0;
+    uint8_t res = 0;
+    uint8_t data = 0xB6;
+
+    res = i2c_write_start();
+    TEST_ASSERT_EQUAL(res, 0);
+    res = i2c_write_address(dev_addr);
+    TEST_ASSERT_EQUAL(res, 0);
+    res = i2c_write_byte(reg_addr);
+    TEST_ASSERT_EQUAL(res, 0);
+    res = i2c_write_byte(data);
+    TEST_ASSERT_EQUAL(res, 0);
+    i2c_stop();
+    // TEST_FAIL_MESSAGE("Fail write one byte");
+}
+
+void test_i2c_transmit_one_byte()
+{
+    uint8_t dev_addr = 0x76;
+    uint8_t reg_addr = 0xE0;
+    uint8_t res = 0;
+    uint8_t data = 0xB6;
+    res = i2c_transmit(dev_addr, reg_addr, &data, 1);
+    TEST_ASSERT_EQUAL(res, 0);
+}
 int main(int argc, char **argv)
 {
     UNITY_BEGIN();
@@ -83,7 +122,10 @@ int main(int argc, char **argv)
     RUN_TEST(test_i2c_start_embedded);
     RUN_TEST(test_i2c_address_to_transmit_embedded);
     RUN_TEST(test_i2c_read_data_embedded);
-    RUN_TEST(test_i2c_receive_data_embedded);
+    RUN_TEST(test_i2c_receive_one_byte_embedded);
+    // RUN_TEST(test_i2c_receive_more_than_one_byte_embedded);
+    RUN_TEST(test_i2c_write_data_embedded);
+    RUN_TEST(test_i2c_transmit_one_byte);
 
     UNITY_END();
 }

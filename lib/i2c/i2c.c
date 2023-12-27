@@ -203,3 +203,27 @@ int8_t i2c_recv_byte(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data)
     }
     return res;
 }
+int8_t i2c_transmit(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint32_t len)
+{
+    int8_t res = 0;
+
+    res = i2c_write_start();
+    if (res == 0)
+    {
+        res = i2c_write_address(dev_addr);
+    }
+    if (res == 0)
+    {
+        res = i2c_write_byte(reg_addr);
+    }
+    for (uint8_t i = 0; i < len; i++)
+    {
+        res = i2c_write_byte(*data++);
+        if (res != 0)
+        {
+            break;
+        }
+    }
+    i2c_stop();
+    return res;
+}

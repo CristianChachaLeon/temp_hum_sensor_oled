@@ -6,6 +6,7 @@
 #define TWINT 7
 #define TWSTA 5
 #define TWEN 2
+#define TWEA 6
 #define TWSTO 4
 
 #define TW_MT_SLA_ACK 0x18
@@ -14,7 +15,7 @@
 #define TW_MR_SLA_ACK 0x40
 #define TW_MR_SLA_NACK 0x48
 #define TW_MR_DATA_ACK 0x50
-
+#define TW_REP_START 0x10
 void status_reg_write(uint8_t value);
 void baud_rate_reg_write(uint8_t value);
 void control_reg_write(uint8_t value);

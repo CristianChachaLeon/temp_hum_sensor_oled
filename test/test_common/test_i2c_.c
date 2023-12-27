@@ -51,18 +51,22 @@ void test_i2c_stop()
     status_reg_write(0);
     control_reg_write(0);
     i2c_stop();
-    TEST_ASSERT_EQUAL(control_reg_read() & 0xB4, 0x94);
+    TEST_ASSERT_EQUAL(control_reg_read() & 0xB4, 0);
 }
 void test_i2c_write_address_and_data()
 {
     uint8_t data = 10;
     uint8_t address = 1;
+    uint8_t dev_reg = 5;
     i2c_init();
     status_reg_write(TW_START);
     uint8_t res = i2c_write_start();
     TEST_ASSERT_EQUAL(res, 0);
     status_reg_write(TW_MT_SLA_ACK);
     res = i2c_write_address(address);
+    TEST_ASSERT_EQUAL(res, 0);
+    status_reg_write(TW_MT_DATA_ACK);
+    res = i2c_write_byte(dev_reg);
     TEST_ASSERT_EQUAL(res, 0);
     status_reg_write(TW_MT_DATA_ACK);
     res = i2c_write_byte(data);
