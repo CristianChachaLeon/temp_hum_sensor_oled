@@ -45,6 +45,38 @@ int8_t get_temperature(uint32_t period, struct bme280_dev *dev)
     return rslt;
 }
 
+int8_t get_humidity(uint32_t period, struct bme280_dev *dev)
+{
+    int8_t rslt = BME280_E_NULL_PTR;
+    uint8_t status_reg;
+    struct bme280_data comp_data;
+
+    rslt = bme280_get_regs(BME280_REG_STATUS, &status_reg, 1, dev);
+    bme280_error_codes_print_result("bme280_get_regs", rslt);
+
+    if (status_reg & BME280_STATUS_MEAS_DONE)
+    {
+        /* Measurement time delay given to read sample */
+        dev->delay_us(period, dev->intf_ptr);
+
+        /* Read compensated data */
+        rslt = bme280_get_sensor_data(BME280_HUM, &comp_data, dev);
+        bme280_error_codes_print_result("bme280_get_sensor_data", rslt);
+
+#ifndef BME280_DOUBLE_ENABLE
+        comp_data.humidity = comp_data.humidity / 1000;
+#endif
+
+#ifdef BME280_DOUBLE_ENABLE
+        printf("Humidity:   %lf %%RH\n", comp_data.humidity);
+#else
+        printf("Humidity:   %lu %%RH\n", (long unsigned int)comp_data.humidity);
+#endif
+    }
+
+    return rslt;
+}
+
 void bme280_delay_us(uint32_t period_us, void *intf_ptr)
 {
     for (uint32_t i = 0; i < period_us; i++)
