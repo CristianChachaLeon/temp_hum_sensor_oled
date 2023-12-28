@@ -100,3 +100,37 @@ void bme280_error_codes_print_result(const char api_name[], int8_t rslt)
         }
     }
 }
+
+void bme280_config_and_init(struct bme280_settings *settings, struct bme280_dev *dev, uint32_t *period)
+{
+    int8_t rslt = 0;
+    rslt = bme280_set_config_i2c(dev);
+    bme280_error_codes_print_result("bme280_set_config", rslt);
+
+    rslt = bme280_init(dev);
+    bme280_error_codes_print_result("bme280_init", rslt);
+
+    rslt = bme280_get_sensor_settings(settings, dev);
+    bme280_error_codes_print_result("bme280_get_sensor_settings", rslt);
+
+    /* Configuring the over-sampling rate, filter coefficient and standby time */
+    /* Overwrite the desired settings */
+    settings->filter = BME280_FILTER_COEFF_2;
+
+    /* Over-sampling rate for humidity, temperature and pressure */
+    settings->osr_h = BME280_OVERSAMPLING_1X;
+    settings->osr_p = BME280_OVERSAMPLING_1X;
+    settings->osr_t = BME280_OVERSAMPLING_1X;
+
+    settings->standby_time = BME280_STANDBY_TIME_0_5_MS;
+    rslt = bme280_set_sensor_settings(BME280_SEL_ALL_SETTINGS, settings, dev);
+    bme280_error_codes_print_result("bme280_set_sensor_settings", rslt);
+
+    /* Always set the power mode after setting the configuration */
+    rslt = bme280_set_sensor_mode(BME280_POWERMODE_NORMAL, dev);
+    bme280_error_codes_print_result("bme280_set_power_mode", rslt);
+
+    /* Calculate measurement time in microseconds */
+    rslt = bme280_cal_meas_delay(period, settings);
+    bme280_error_codes_print_result("bme280_cal_meas_delay", rslt);
+}

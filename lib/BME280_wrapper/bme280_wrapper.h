@@ -17,4 +17,6 @@ int8_t get_temperature(uint32_t period, struct bme280_dev *dev);
 
 void bme280_error_codes_print_result(const char api_name[], int8_t rslt);
 
+void bme280_config_and_init(struct bme280_settings *settings, struct bme280_dev *dev, uint32_t *period);
+
 #endif
