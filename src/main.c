@@ -17,7 +17,9 @@ int main(void)
   while (1)
   {
     rslt = get_temperature(period, &dev);
-    bme280_error_codes_print_result("get_temperature", rslt);
+    bme280_error_codes_print_result("bme280_get_temperature", rslt);
+    rslt = get_humidity(period, &dev);
+    bme280_error_codes_print_result("bme280_get_humidity", rslt);
     _delay_ms(1000);
   }
 
