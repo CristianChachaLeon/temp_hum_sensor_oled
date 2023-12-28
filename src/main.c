@@ -2,13 +2,10 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include "uart.h"
-// #include "common/common.h"
-//  #include "./examples/common/common.h"
+
 #include "bme280.h"
 #define LED_PIN PB5 // Assuming you're using the Arduino UNO board, where the built-in LED is connected to Pin 13 (PB5)
 #include "i2c.h"
-
-#define SAMPLE_COUNT UINT8_C(50)
 
 BME280_INTF_RET_TYPE bme280_i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
                                       void *intf_ptr)
@@ -57,6 +54,7 @@ static int8_t get_temperature(uint32_t period, struct bme280_dev *dev)
 
 #ifdef BME280_DOUBLE_ENABLE
       printf("Temperature[%d]:   %lf deg C\n", idx, comp_data.temperature);
+      printDouble(comp_data.temperature, 2);
 #else
       printf("Temperature[%d]:   %ld deg C\n", idx, (long int)comp_data.temperature);
 #endif
