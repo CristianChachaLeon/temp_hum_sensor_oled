@@ -38,7 +38,7 @@ static int8_t get_temperature(uint32_t period, struct bme280_dev *dev)
   uint8_t status_reg;
   struct bme280_data comp_data;
 
-  while (idx < SAMPLE_COUNT)
+  while (idx < 1)
   {
     rslt = bme280_get_regs(BME280_REG_STATUS, &status_reg, 1, dev);
     printf("bme280_get_regs %d\n", rslt);
@@ -87,10 +87,6 @@ int main(void)
 
   rslt = bme280_init(&dev);
   printf("bme280_init %d\n", rslt);
-
-  printf("calib data t1 %d t2 %d t3 %d\n", dev.calib_data.dig_t1, dev.calib_data.dig_t2, dev.calib_data.dig_t3);
-  printf("calib data p1 %d p2 %d p3 %d\n", dev.calib_data.dig_p1, dev.calib_data.dig_p2, dev.calib_data.dig_p3);
-  printf("calib data h1 %d h2 %d h3 %d\n", dev.calib_data.dig_h1, dev.calib_data.dig_h2, dev.calib_data.dig_h3);
 
   rslt = bme280_get_sensor_settings(&settings, &dev);
   printf("bme280_get_sensor_settings %d\n", rslt);

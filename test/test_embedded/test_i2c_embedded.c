@@ -79,14 +79,14 @@ void test_i2c_receive_one_byte_embedded()
 void test_i2c_receive_more_than_one_byte_embedded()
 {
     uint8_t dev_addr = 0x76;
-    uint8_t reg_addr = 0x88;
+    uint8_t reg_addr = 0xF7;
     uint8_t res = 0;
-    uint32_t len = 26;
-    uint8_t calib_data[26] = {0};
+    uint32_t len = 8;
+    uint8_t calib_data[8] = {0};
     res = i2c_recv(dev_addr, reg_addr, calib_data, len);
     TEST_ASSERT_EQUAL(res, 0);
-    TEST_ASSERT_EQUAL(calib_data[2], 0);
-    TEST_ASSERT_NOT_EQUAL(calib_data[25], 0);
+    TEST_ASSERT_NOT_EQUAL(calib_data[0], 0);
+    TEST_ASSERT_NOT_EQUAL(calib_data[8], 0);
 }
 
 void test_i2c_write_data_embedded()
