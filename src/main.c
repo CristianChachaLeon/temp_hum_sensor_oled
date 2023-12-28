@@ -2,18 +2,9 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include "uart.h"
-
-#include "bme280.h"
+#include "bme280_wrapper.h"
 #define LED_PIN PB5 // Assuming you're using the Arduino UNO board, where the built-in LED is connected to Pin 13 (PB5)
 #include "i2c.h"
-
-BME280_INTF_RET_TYPE bme280_i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
-                                      void *intf_ptr)
-{
-  uint8_t dev_addr = *(uint8_t *)intf_ptr;
-
-  return i2c_transmit(dev_addr, reg_addr, reg_data, len);
-}
 
 BME280_INTF_RET_TYPE bme280_i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t length, void *intf_ptr)
 {
