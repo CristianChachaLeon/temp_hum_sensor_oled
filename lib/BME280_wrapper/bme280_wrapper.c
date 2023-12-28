@@ -64,3 +64,39 @@ int8_t bme280_set_config_i2c(struct bme280_dev *dev)
     dev->intf = BME280_I2C_INTF;
     return 0;
 }
+
+void bme280_error_codes_print_result(const char api_name[], int8_t rslt)
+{
+    if (rslt != BME280_OK)
+    {
+        printf("%s\t", api_name);
+
+        switch (rslt)
+        {
+        case BME280_E_NULL_PTR:
+            printf("Error [%d] : Null pointer error.", rslt);
+            printf(
+                "It occurs when the user tries to assign value (not address) to a pointer, which has been initialized to NULL.\r\n");
+            break;
+
+        case BME280_E_COMM_FAIL:
+            printf("Error [%d] : Communication failure error.", rslt);
+            printf(
+                "It occurs due to read/write operation failure and also due to power failure during communication\r\n");
+            break;
+
+        case BME280_E_DEV_NOT_FOUND:
+            printf("Error [%d] : Device not found error. It occurs when the device chip id is incorrectly read\r\n",
+                   rslt);
+            break;
+
+        case BME280_E_INVALID_LEN:
+            printf("Error [%d] : Invalid length error. It occurs when write is done with invalid length\r\n", rslt);
+            break;
+
+        default:
+            printf("Error [%d] : Unknown error code\r\n", rslt);
+            break;
+        }
+    }
+}
