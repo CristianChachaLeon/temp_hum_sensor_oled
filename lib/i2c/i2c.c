@@ -224,7 +224,7 @@ int8_t i2c_recv(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint32_t len)
     }
     return res;
 }
-int8_t i2c_transmit(uint8_t dev_addr, uint8_t reg_addr, uint8_t *data, uint32_t len)
+int8_t i2c_transmit(uint8_t dev_addr, uint8_t reg_addr, const uint8_t *data, uint32_t len)
 {
     int8_t res = 0;
 
