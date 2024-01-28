@@ -16,11 +16,12 @@ BME280_INTF_RET_TYPE bme280_i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32
     return i2c_recv(dev_addr, reg_addr, reg_data, length);
 }
 
-int8_t get_temperature(uint32_t period, struct bme280_dev *dev)
+int8_t get_temperature(uint32_t period, struct bme280_dev *dev,int32_t * temp)
 {
     int8_t rslt = BME280_E_NULL_PTR;
     uint8_t status_reg;
     struct bme280_data comp_data;
+    
 
     rslt = bme280_get_regs(BME280_REG_STATUS, &status_reg, 1, dev);
 
@@ -39,18 +40,18 @@ int8_t get_temperature(uint32_t period, struct bme280_dev *dev)
         printf("Temperature:   %lf deg C\n", comp_data.temperature);
 #else
         printf("Temperature:   %ld deg C\n", (long int)comp_data.temperature);
+        *temp = (long int)comp_data.temperature;
 #endif
     }
 
     return rslt;
 }
 
-int8_t get_humidity(uint32_t period, struct bme280_dev *dev)
+int8_t get_humidity(uint32_t period, struct bme280_dev *dev, uint32_t * humidity)
 {
     int8_t rslt = BME280_E_NULL_PTR;
     uint8_t status_reg;
     struct bme280_data comp_data;
-
     rslt = bme280_get_regs(BME280_REG_STATUS, &status_reg, 1, dev);
     bme280_error_codes_print_result("bme280_get_regs", rslt);
 
@@ -71,6 +72,8 @@ int8_t get_humidity(uint32_t period, struct bme280_dev *dev)
         printf("Humidity:   %lf %%RH\n", comp_data.humidity);
 #else
         printf("Humidity:   %lu %%RH\n", (long unsigned int)comp_data.humidity);
+        *humidity =(long unsigned int)comp_data.humidity;
+
 #endif
     }
 
